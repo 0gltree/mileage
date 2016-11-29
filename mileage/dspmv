@@ -1,0 +1,3 @@
+#!/bin/bash
+
+mv /home/ottol/mileage.png /var/www/html

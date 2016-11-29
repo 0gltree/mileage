@@ -1,0 +1,20 @@
+#!/bin/bash
+
+BD=/home/ottol/mileage
+VFile=${BD}/viin.txt
+cd $BD
+if [ -n "$1" -a -n "$2" -a -n "$3" ]
+then
+	/bin/echo -en "$1 $2 $3\n" >>mileage_withDate.txt
+	oDT=$(cat oDt)
+	DT=$(date +%Y.%m.%d)
+	echo $DT >oDt
+	echo "/$oDT5cw$DT:wq!" >$VFile
+	./mileage.pl
+	if [ $? -eq 0 ]
+	then
+		sudo vi /var/www/html/index.html <$VFile 2>/dev/null
+	fi
+else
+	echo "`basename $0` gas odometer date"
+fi

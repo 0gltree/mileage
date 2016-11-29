@@ -1,0 +1,34 @@
+#!/bin/bash
+
+BD=/home/ottol/mysql_Scripts
+BUD=${BD}/BUs
+cd $BD
+export PATH=$BD:$PATH:.
+DDT=`date +%Y%m%d`
+DT=`date +%Y%m%d_%H%M`
+echo $DDT
+
+if [ "$1" = "?" ]
+then	echo "Usage: dump         (dump all DBs)"
+	echo "       dump DBname  (dump just the one DBname)"
+	exit 0
+fi
+
+#needStart
+
+mkdir  ${BUD}/$DDT
+
+R=$1
+if [ "$R" = "" ]
+then	R=`showDatabases.sql |egrep -iv 'data|schem|ysql'`
+fi
+echo "R=$R"
+for i in $R
+do	FNO="${i}_${DT}"
+	FN="${BUD}/${DDT}/${FNO}"
+echo $FN
+	mysqldump -u ottol -pe^?0aI/% $i > $FN 2>>$BD/dumplog.err
+#	cat $FN | gzip -c - >${FN}.gz
+	sync
+#	splitDump ${DDT}/$FNO
+done
